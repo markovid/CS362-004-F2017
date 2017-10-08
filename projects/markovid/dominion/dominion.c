@@ -1262,13 +1262,14 @@ int updateCoins(int player, struct gameState *state, int bonus)
 int playSmithy(int currentPlayer, int handPos, struct gameState *state){
 	      //+3 Cards
 	int i;
-    for (i = 0; i < 3; i++)
+    for (i = 0; i < handPos; i++)
 	{
 	  drawCard(currentPlayer, state);
-	}
+	
 			
       //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
+      discardCard(i, currentPlayer, state, 0);
+	}
       return 0;
 }
 
@@ -1283,8 +1284,6 @@ int playAdventurer(int drawntreasure, int currentPlayer, int *temphand, int coun
 			drawntreasure++;
 		else{
 			temphand[counter]=cardDrawn;
-			state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
-			counter++;
 		}
 	}
     while(counter-1>=0){
@@ -1295,7 +1294,6 @@ int playAdventurer(int drawntreasure, int currentPlayer, int *temphand, int coun
 }
 
 int playMine( int currentPlayer, int choice1, int choice2, int handPos, struct gameState *state){
-	int j = state->hand[currentPlayer][choice1];  //store card we will trash
 
       if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
 	{
@@ -1317,17 +1315,7 @@ int playMine( int currentPlayer, int choice1, int choice2, int handPos, struct g
       //discard card from hand
       discardCard(handPos, currentPlayer, state, 0);
 
-      //discard trashed card
-	  int i;
-      for (i = 0; i < state->handCount[currentPlayer]; i++)
-	{
-	  if (state->hand[currentPlayer][i] == j)
-	    {
-	      discardCard(i, currentPlayer, state, 0);			
-	      break;
-	    }
-	}
-			
+	
       return 0;	
 }
 
@@ -1336,7 +1324,7 @@ int playVillage(int currentPlayer, int handPos, struct gameState *state){
       drawCard(currentPlayer, state);
 			
       //+2 Actions
-      state->numActions = state->numActions + 2;
+      state->numActions = state->numActions * 2;
 			
       //discard played card from hand
       discardCard(handPos, currentPlayer, state, 0);
@@ -1350,8 +1338,7 @@ int playGreatHall(int currentPlayer, int handPos, struct gameState *state){
       //+1 Actions
       state->numActions++;
 			
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
+
       return 0;
 }
 //end of dominion.c
