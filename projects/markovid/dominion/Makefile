@@ -40,31 +40,50 @@ runtests: testDrawCard
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 	
-tests.out: unittest1.c safe_assert.h safe_assert.c
+unittestresults.out: unittest1.c safe_assert.h safe_assert.c
 	echo "Result for running dominion tests:" > tests.out
 	
-	echo "unittest1.c:" >> tests.out
+	echo "unittest1.c:" >> unittestresults.out
 	gcc -o unittest1 dominion.c unittest1.c rngs.c safe_assert.c $(CFLAGS)
-	unittest1 >> tests.out
-	gcov dominion.c >> tests.out
+	unittest1 >> unittestresults.out
+	gcov dominion.c >> unittestresults.out
 	
-	echo "unittest2.c:" >> tests.out
+	echo "unittest2.c:" >> unittestresults.out
 	gcc -o unittest2 dominion.c unittest2.c rngs.c safe_assert.c $(CFLAGS)
-	unittest2 >> tests.out
-	gcov dominion.c >> tests.out
+	unittest2 >> unittestresults.out
+	gcov dominion.c >> unittestresults.out
 	
-	echo "unittest3.c:" >> tests.out
+	echo "unittest3.c:" >> unittestresults.out
 	gcc -o unittest3 dominion.c unittest3.c rngs.c safe_assert.c $(CFLAGS)
-	unittest3 >> tests.out
-	gcov dominion.c >> tests.out
+	unittest3 >> unittestresults.out
+	gcov dominion.c >> unittestresults.out
 	
-	echo "unittest4.c:" >> tests.out
+	echo "unittest4.c:" >> unittestresults.out
 	gcc -o unittest4 dominion.c unittest4.c rngs.c safe_assert.c $(CFLAGS)
-	unittest4 >> tests.out
-	gcov dominion.c >> tests.out
+	unittest4 >> unittestresults.out
+	gcov dominion.c >> unittestresults.out
 
+	echo "cardtest2.c:" >> unittestresults.out
+	gcc -o cardtest2 dominion.c cardtest2.c rngs.c safe_assert.c $(CFLAGS)
+	cardtest2 >> unittestresults.out
+	gcov dominion.c >> unittestresults.out
+	
+	echo "cardtest3.c:" >> unittestresults.out
+	gcc -o cardtest3 dominion.c cardtest3.c rngs.c safe_assert.c $(CFLAGS)
+	cardtest3 >> unittestresults.out
+	gcov dominion.c >> unittestresults.out
+	
+	echo "cardtest1.c:" >> unittestresults.out
+	gcc -o cardtest1 dominion.c cardtest1.c rngs.c safe_assert.c $(CFLAGS)
+	cardtest1 >> unittestresults.out
+	gcov dominion.c >> unittestresults.out
+	
+	echo "cardtest4.c:" >> unittestresults.out
+	gcc -o cardtest4 dominion.c cardtest4.c rngs.c safe_assert.c $(CFLAGS)
+	cardtest4 >> unittestresults.out
+	gcov dominion.c >> unittestresults.out
 
-all: playdom player testDrawCard testBuyCard badTestDrawCard tests.out
+all: playdom player testDrawCard testBuyCard badTestDrawCard unittestresults.out
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe tests.out
+	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe unittestresults.out

@@ -1,18 +1,15 @@
 /*
  *Dylan Markovic
  *CS362 Assignment 3
- *cardtest1.c
- *testing 'Smithy' card
+ *cardtest2.c
+ *testing 'GreatHall Card'
 */
 
 /*
- *1. Current player should receive exact 3 cards.
-
- *2. 3 cards should come from his own pile.
-
- *3. No state change should occur for other players.
-
- *4. No state change should occur to the victory card piles and kingdom card piles.
+	***testing GreatHall Card
+	*when the great hall card is played, the player should gain 1 action and draw a card into hand
+	*every other player should have the same state
+	*the card should be in the discard pile after it is played
 */
 #include "dominion.h"
 #include "dominion_helpers.h"
@@ -24,13 +21,13 @@
 #include "safe_assert.h"
 #include <limits.h>
 
-#define TESTCARD "smithy"
+#define TESTCARD "great hall"
 #define SEED 1000
 #define PLAYER_COUNT 4
 #define MAX_HAND 500
 #define MAX_DECK 500
 
-int testSmithy(){
+int testGreatHall(){
 	struct gameState G, testG;
 	int k[10] = {adventurer, embargo, village, minion, mine, cutpurse,
 			sea_hag, tribute, smithy, council_room};
@@ -43,25 +40,27 @@ int testSmithy(){
 	printf("     ***TESTING: %s***\n", TESTCARD);
 	
 	
-	//make player 0 have only a village in hand, and no discards, 1 deck card.
+	//make player 0 have only a village in hand, and 1 duchy in deck, nothing in discard
 	G.handCount[0] = 1;
-	G.deckCount[0] = 3;
+	G.deckCount[0] = 1;
 	G.discardCount[0] = 0;
-	G.hand[0][0] = smithy;
+	G.hand[0][0] = great_hall;
 	memcpy(&testG, &G, sizeof(struct gameState));
-	printf("TESTING Number of Cards in Hand after Playing Smithy Via playSmithy: ");
+	printf("TESTING Action Count after Playing Great Hall Via playGreatHall: ");
 	G.numActions = 1;
-	playSmithy(0, 0, &G);
-	safe_assert(G.handCount[0]== 3);
+	playGreatHall(0, 0, &G);
+	safe_assert(G.numActions == 1);
 	
-	printf("TESTING Smithy was Discarded after playSmithy: ");
-	safe_assert(G.discardCount[0] == 1 && G.discard[0][0] == smithy);
+	printf("TESTING GreatHall was Discarded after playVillage: ");
+	safe_assert(G.discardCount[0] == 1 && G.discard[0][0] == great_hall);
 	
+	printf("TESTING 1 Card is in hand after playGreatHall: ");
+	safe_assert(G.handCount[0] == 1);
 	
-	printf("TESTING 0 Cards are in deck after playSmithy: ");
+	printf("TESTING 0 Cards are in deck after PlayGreatHall: ");
 	safe_assert(G.deckCount[0] == 0);
 	
-	printf("TESTING Other Players(1-3) State After playSmithy: ");
+	printf("TESTING Other Players(1-3) State After playGreatHall: ");
 	int playerNotEffected = 0;	//flag for player difference
 	for(j = 1; j < PLAYER_COUNT; j++){	//testing other players hands
 		for(i = 0; i < MAX_HAND; i++){
@@ -89,19 +88,21 @@ int testSmithy(){
 	
 	//restore G to before card was played
 	memcpy(&G, &testG, sizeof(struct gameState));
-	printf("TESTING Number of Cards in Hand after Playing Smithy Via playCard: ");
+	printf("TESTING Action Count after Playing Great Hall via playCard: ");
 	G.numActions = 1;
-	playCard(0,0,0, 0, &G);
-	safe_assert(G.handCount[0]== 3);
+	playCard(0, 0, 0, 0, &G);
+	safe_assert(G.numActions == 1);
 	
-	printf("TESTING Smithy was Discarded after playCard: ");
-	safe_assert(G.discardCount[0] == 1 && G.discard[0][0] == smithy);
+	printf("TESTING Great Hall was Discarded after playCard: ");
+	safe_assert(G.discardCount[0] == 1 && G.discard[0][0] == great_hall);
 	
+	printf("TESTING 1 Card is in hand after playCard: ");
+	safe_assert(G.handCount[0] == 1);
 	
 	printf("TESTING 0 Cards are in deck after playCard: ");
 	safe_assert(G.deckCount[0] == 0);
 	
-	printf("TESTING Other Players(1-3) State After playSmithy: ");
+	printf("TESTING Other Players(1-3) State After playCard: ");
 	playerNotEffected = 0;	//flag for player difference
 	for(j = 1; j < PLAYER_COUNT; j++){	//testing other players hands
 		for(i = 0; i < MAX_HAND; i++){
@@ -119,7 +120,7 @@ int testSmithy(){
 	}
 	safe_assert(playerNotEffected == 0);
 	
-		 badState = 0;
+		badState = 0;
 	printf("TESTING STATE OF THE TREASURE AND VICTORY DECKS: ");
 	  for (i = adventurer; i <= treasure_map; i++){
 		  if(G.supplyCount[i] != testG.supplyCount[i])
@@ -135,6 +136,6 @@ int testSmithy(){
 }
 
 int main(){
-	testSmithy();
+	testGreatHall();
 	return 0;
 }

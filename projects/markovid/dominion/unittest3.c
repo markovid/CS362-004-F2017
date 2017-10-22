@@ -56,6 +56,20 @@ int testUpdateCoins(){
 		updateCoins(0,&G,5);
 		safe_assert(G.coins == 5); 
 	
+	printf("\nTESTING All Other Cards for 0 value: ");
+		int badValue = 0;	//flag to see if unknown card has value;
+		int i;
+		for(i = 0; i <= treasure_map; i++){	//check all possible cards in enum for a coin value
+			G.coins = 0;
+			G.handCount[0] = 1;
+			G.hand[0][0] = i;
+			if(G.hand[0][0] != copper && G.hand[0][0] != silver && G.hand[0][0] != gold)
+				updateCoins(0,&G,0);
+			if(G.coins !=0)
+				badValue++;
+		}
+		safe_assert(badValue == 0); 
+	
 
 		
 	printf("\n     ___TESTING COMPLETE___\n");

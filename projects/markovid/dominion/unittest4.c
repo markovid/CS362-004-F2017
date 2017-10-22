@@ -129,7 +129,7 @@ int testScoreFor(){
 	printf("\nTESTING GARDENS IN DISCARD WITH 10 ESTATE IN DECK: ");
 	int i;
 	for(i = 0; i < 10; i++)
-		G.deck[0][i] = estate;
+		G.hand[0][i] = estate;
 	G.discard[0][0] = gardens;
 	safe_assert(scoreFor(0,&G) == 11);
 	
