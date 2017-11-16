@@ -1,0 +1,21 @@
+Testing buyCard(2)
+Fail - Card not correctly added to discard pile
+Testing isGameOver()
+Success!
+Testing getWinners()
+Fail - Players not drawn at beginning of game.
+Testing drawCard()
+Success!
+Testing Estate
+Passed!
+Testing Adventurer
+Passed!
+Testing Smithy
+Fail - Hand size was not increased by 3.
+Fail - Miscellaneous memory corruption
+Testing Gardens
+Passed!
+File 'dominion.c'
+Lines executed:36.86% of 548
+Creating 'dominion.c.gcov'
+
