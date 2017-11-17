@@ -1,0 +1,150 @@
+unittest1.c:
+     ***TESTING: whoseTurn***
+
+TESTING NORMAL VALUES(0-3):  TEST PASSED
+
+TESTING MAX VALUE:  TEST PASSED
+
+TESTING MIN VALUE:  TEST PASSED
+
+     ___TESTING COMPLETE___
+File 'dominion.c'
+Lines executed:15.92% of 559
+Creating 'dominion.c.gcov'
+
+unittest2.c:
+     ***TESTING: numHandCards***
+
+TESTING NORMAL VALUES for current player (0-500):  TEST PASSED
+
+TESTING MAX VALUE for card quantity:  TEST PASSED
+
+TESTING MIN VALUE:  TEST PASSED
+
+     ___TESTING COMPLETE___
+File 'dominion.c'
+Lines executed:16.46% of 559
+Creating 'dominion.c.gcov'
+
+unittest3.c:
+     ***TESTING: updateCoins***
+
+TESTING Copper Coin:  TEST PASSED
+
+TESTING Silver Coin:  TEST PASSED
+
+TESTING Gold Coin:  TEST PASSED
+
+TESTING Bonus:  TEST PASSED
+
+     ___TESTING COMPLETE___
+File 'dominion.c'
+Lines executed:16.10% of 559
+Creating 'dominion.c.gcov'
+
+unittest4.c:
+     ***TESTING: scoreFor***
+
+TESTING HAND SCORE...
+
+TESTING CURSE:  TEST PASSED
+
+TESTING ESTATE:  TEST PASSED
+
+TESTING DUCHY:  TEST PASSED
+
+TESTING PROVINCE:  TEST PASSED
+
+TESTING GREAT HALL:  TEST PASSED
+
+TESTING Gardens:  TEST PASSED
+
+TESTING DECK SCORE...
+
+TESTING CURSE:  TEST FAILED!!!!!
+
+TESTING ESTATE:  TEST FAILED!!!!!
+
+TESTING DUCHY:  TEST FAILED!!!!!
+
+TESTING PROVINCE:  TEST FAILED!!!!!
+
+TESTING GREAT HALL:  TEST FAILED!!!!!
+
+TESTING Gardens:  TEST PASSED
+
+TESTING DISCARD SCORE...
+
+TESTING CURSE:  TEST PASSED
+
+TESTING ESTATE:  TEST PASSED
+
+TESTING DUCHY:  TEST PASSED
+
+TESTING PROVINCE:  TEST PASSED
+
+TESTING GREAT HALL:  TEST PASSED
+
+TESTING Gardens:  TEST PASSED
+
+TESTING GARDENS IN DISCARD WITH 10 ESTATE IN DECK:  TEST FAILED!!!!!
+
+     ___TESTING COMPLETE___
+File 'dominion.c'
+Lines executed:21.65% of 559
+Creating 'dominion.c.gcov'
+
+cardtest2.c:
+     ***TESTING: village***
+TESTING Action Count after Playing Village via playCard:  TEST PASSED
+TESTING Village was Discarded after playCard:  TEST FAILED!!!!!
+TESTING 1 Card is in hand after playCard:  TEST PASSED
+TESTING 0 Cards are in deck after playCard:  TEST PASSED
+TESTING Other Players(1-3) State After playCard:  TEST PASSED
+TESTING STATE OF THE TREASURE AND VICTORY DECKS:  TEST PASSED
+
+     ___TESTING COMPLETE___
+File 'dominion.c'
+Lines executed:22.54% of 559
+Creating 'dominion.c.gcov'
+
+cardtest3.c:
+     ***TESTING: great hall***
+TESTING Action Count after Playing Great Hall via playCard:  TEST PASSED
+TESTING Great Hall was Discarded after playCard:  TEST FAILED!!!!!
+TESTING 1 Card is in hand after playCard:  TEST PASSED
+TESTING 0 Cards are in deck after playCard:  TEST PASSED
+TESTING Other Players(1-3) State After playCard:  TEST PASSED
+TESTING STATE OF THE TREASURE AND VICTORY DECKS:  TEST PASSED
+
+     ___TESTING COMPLETE___
+File 'dominion.c'
+Lines executed:22.54% of 559
+Creating 'dominion.c.gcov'
+
+cardtest1.c:
+     ***TESTING: smithy***
+TESTING Number of Cards in Hand after Playing Smithy Via playCard:  TEST PASSED
+TESTING Smithy was Discarded after playCard:  TEST FAILED!!!!!
+TESTING 0 Cards are in deck after playCard:  TEST PASSED
+TESTING Other Players(1-3) State After playSmithy:  TEST PASSED
+TESTING STATE OF THE TREASURE AND VICTORY DECKS:  TEST PASSED
+
+     ___TESTING COMPLETE___
+File 'dominion.c'
+Lines executed:23.08% of 559
+Creating 'dominion.c.gcov'
+
+cardtest4.c:
+     ***TESTING: adventurer***
+TESTING Number of Cards in Hand after Playing Adventurer Via playCard:  TEST FAILED!!!!!
+TESTING QUANTITY of DISCARD to DECK CARDS  TEST FAILED!!!!!
+TESTING ALL CARDS IN HAND ARE TREASURE CARDS via playCard:  TEST FAILED!!!!!
+TESTING Other Players(1-3) State After playSmithy:  TEST PASSED
+TESTING STATE OF THE TREASURE AND VICTORY DECKS:  TEST PASSED
+
+     ___TESTING COMPLETE___
+File 'dominion.c'
+Lines executed:21.65% of 559
+Creating 'dominion.c.gcov'
+
