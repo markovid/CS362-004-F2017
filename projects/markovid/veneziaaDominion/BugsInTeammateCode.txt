@@ -1,0 +1,28 @@
+Dylan Markovic
+CS362-400
+Bugs Found in Adam Venezia's Dominion Code
+
+Several bugs were discovered in Adam Venezia's Dominion Code.
+1.	In the scoreFor function, the score calculated for the deck was using
+the number of cards in the discard pile to iterate the loop.  This obviously leads to an incorrect score. If the
+player has only 1 card in his discard pile and 300 in his deck, the calculation will skip 299 possible treasure cards.
+the second problem with scorefor is the calculation for the gardens.  Gardens is worth 1 point for every 10 cards in 
+the players deck, therefore the calculation should not use fullDeckCount, but simply G.deckCount[currentPlayer].
+
+2.	Smithy was never discarded after it was played.
+
+3. 	Village was never discarded after it was played.
+
+4.  Great Hall was never discarded after it was played.
+
+5.  For the Adventurer Card, several bugs are present.  The player did not end with the correct number of cards in his hand
+(he should have the same number + 2 drawn treasure -1 adventurer, so 1 extra card in total).  For my unit test, the player
+should have ended up with only treasure cards in his hand, this was not the result.  The player also endup up with an incorrect 
+number of discard and deck cards, indicating the player is drawing too many, or not discarding enough, or both.
+
+My randomly tested cards were Great Hall, Smithy, and Adventurer.  The random tests had the same results as the unit testing.
+Meaning Great Hall and Smithy were never discarded, and the Adventurer Card was ending up with wrong number of cards in his
+hand, deck, and discard pile.  By the random tests having consistent results that were the same as the unit testing, I can 
+be more confident that the errors in the cards are not caused by random states of the game.  The player using the card, the 
+state of the game, the position of the card in the players hand, and the number of players are most likely not factors
+in the bugs because the random tests should not have failed every encounter if this was the case.
