@@ -1,4 +1,4 @@
-CFLAGS = -Wall -fpic -coverage -lm
+CFLAGS = -Wall -fpic -coverage -lm -g
 safe_assert.o: safe_assert.h safe_assert.c
 	gcc -c safe_assert.c -g $(CFLAGS)
 
