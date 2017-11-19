@@ -61,7 +61,7 @@ int randomGreatHall(){
 		memcpy(&originalG, &G, sizeof(struct gameState));
 		
 		G.numActions = 1;
-		playSmithy(currentPlayer, cardPosition, &G);
+		playSmithy(currentPlayer, &G, cardPosition);
 
 		
 		printf("TESTING Smithy was Discarded after playSmithy: ");

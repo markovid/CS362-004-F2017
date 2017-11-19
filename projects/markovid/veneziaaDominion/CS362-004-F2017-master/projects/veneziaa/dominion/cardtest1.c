@@ -51,7 +51,7 @@ int testSmithy(){
 	memcpy(&testG, &G, sizeof(struct gameState));
 	printf("TESTING Number of Cards in Hand after Playing Smithy Via playSmithy: ");
 	G.numActions = 1;
-	playSmithy(0, 0, &G);
+	playSmithy(0, &G, 0);
 	safe_assert(G.handCount[0]== 3);
 	
 	printf("TESTING Smithy was Discarded after playSmithy: ");
