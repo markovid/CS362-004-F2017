@@ -44,7 +44,7 @@ int randomGreatHall(){
 	struct gameState G, originalG;
 	int kard[10] = {adventurer, embargo, village, minion, mine, cutpurse,
 			sea_hag, tribute, smithy, council_room};
-	int i,j,k;
+	int i;
 	//test card TEST_NUMBER many times
 	for(i = 0; i < TEST_NUMBER; i++){
 			printf("     ***TESTING %d of %d: %s***\n", i+1, TEST_NUMBER, TESTCARD);
@@ -60,26 +60,26 @@ int randomGreatHall(){
 		//copy G into the state we will not be altering, originalG
 		memcpy(&originalG, &G, sizeof(struct gameState));
 		
-
-		//**** testing via playCard ********
 		G.numActions = 1;
-		playCard(cardPosition, 0, 0, 0, &G);
+		playSmithy(currentPlayer, cardPosition, &G);
+
 		
-		printf("TESTING smithy was Discarded after Smithy via playCard: ");
+		printf("TESTING Smithy was Discarded after playSmithy: ");
 		safe_assert(G.discardCount[currentPlayer] == originalG.discardCount[currentPlayer] + 1 //1 more card after used
-			&& G.discard[currentPlayer][G.discardCount[currentPlayer]-1] == great_hall);  //top of discard pile is greathall
+			&& G.discard[currentPlayer][G.discardCount[currentPlayer]-1] == smithy);  //top of discard pile is greathall
 			
-		printf("TESTING Number of Cards in hand after Smithy: ");
+		printf("TESTING Number of Cards in hand after playSmithy: ");
 		safe_assert(G.handCount[currentPlayer] == originalG.handCount[currentPlayer] + 2);//should have discarded 1 and drawn 3
 		
-		printf("TESTING Smithy was Discarded after Smithy: ");
+		printf("TESTING Smithy was Discarded after playSmithy: ");
 		safe_assert(G.discardCount[currentPlayer] == originalG.discardCount[currentPlayer] + 1 && G.discard[currentPlayer][G.discardCount[currentPlayer]-1] == smithy);	
 		
-		printf("TESTING 3 less Cards are in deck after Smithy: ");
+		printf("TESTING 3 less Cards are in deck after playSmithy: ");
 		safe_assert(G.deckCount[currentPlayer] == originalG.deckCount[currentPlayer] -3);
 		
-		printf("TESTING Other Players' State After Smithy: ");
+		printf("TESTING Other Players' State After playSmithy: ");
 		int playerNotEffected = 0;	//flag for player difference
+		int j, k;
 		for(j = 0; j < numberOfPlayers; j++){	//testing other players hands
 			if(j != currentPlayer){
 				for(k = 0; k < MAX_HAND; k++){
@@ -99,6 +99,54 @@ int randomGreatHall(){
 		safe_assert(playerNotEffected == 0);
 		
 		int badState = 0;
+		printf("TESTING STATE OF THE TREASURE AND VICTORY DECKS: ");
+		for (k = adventurer; k <= treasure_map; k++){
+			if(G.supplyCount[k] != originalG.supplyCount[k])
+				badState++;
+		}
+		safe_assert(badState==0);
+		
+		//restore G to before card was played
+		
+		//**** testing via playCard ********
+		memcpy(&G, &originalG, sizeof(struct gameState));
+		G.numActions = 1;
+		playCard(cardPosition, 0, 0, 0, &G);
+		
+		printf("TESTING smithy was Discarded after Smithy via playCard: ");
+		safe_assert(G.discardCount[currentPlayer] == originalG.discardCount[currentPlayer] + 1 //1 more card after used
+			&& G.discard[currentPlayer][G.discardCount[currentPlayer]-1] == great_hall);  //top of discard pile is greathall
+			
+		printf("TESTING Number of Cards in hand after Smithy: ");
+		safe_assert(G.handCount[currentPlayer] == originalG.handCount[currentPlayer] + 2);//should have discarded 1 and drawn 3
+		
+		printf("TESTING Smithy was Discarded after Smithy: ");
+		safe_assert(G.discardCount[currentPlayer] == originalG.discardCount[currentPlayer] + 1 && G.discard[currentPlayer][G.discardCount[currentPlayer]-1] == smithy);	
+		
+		printf("TESTING 3 less Cards are in deck after Smithy: ");
+		safe_assert(G.deckCount[currentPlayer] == originalG.deckCount[currentPlayer] -3);
+		
+		printf("TESTING Other Players' State After Smithy: ");
+		playerNotEffected = 0;	//flag for player difference
+		for(j = 0; j < numberOfPlayers; j++){	//testing other players hands
+			if(j != currentPlayer){
+				for(k = 0; k < MAX_HAND; k++){
+					if(G.hand[j][k] != originalG.hand[j][k])
+						playerNotEffected++;
+				}
+				for(k = 0; k < MAX_DECK; k++){	//testing other players decks
+					if(G.deck[j][k] != originalG.deck[j][k])
+						playerNotEffected++;
+				}
+				for(k = 0; k < MAX_DECK; k++){	//testing other players discards
+					if(G.discard[j][k] != originalG.discard[j][k])
+						playerNotEffected++;
+				}
+			}
+		}
+		safe_assert(playerNotEffected == 0);
+		
+		badState = 0;
 		printf("TESTING STATE OF THE TREASURE AND VICTORY DECKS: ");
 		for (k = adventurer; k <= treasure_map; k++){
 			if(G.supplyCount[k] != originalG.supplyCount[k])

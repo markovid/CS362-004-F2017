@@ -43,7 +43,7 @@ int randomAdventurer(){
 	struct gameState G, originalG;
 	int kard[10] = {adventurer, embargo, village, minion, mine, cutpurse,
 			sea_hag, tribute, smithy, council_room};
-	int i,j,k;
+	int i;
 	//test card TEST_NUMBER many times
 	for(i = 0; i < TEST_NUMBER; i++){
 			printf("     ***TESTING %d of %d: %s***\n", i+1, TEST_NUMBER, TESTCARD);
@@ -59,29 +59,31 @@ int randomAdventurer(){
 		//copy G into the state we will not be altering, originalG
 		memcpy(&originalG, &G, sizeof(struct gameState));
 		
-
-		
-		//restore G to before card was played
-		
-		//**** testing via playCard ********
-
-		printf("TESTING Action Count after Playing Adventurer via playCard: ");
 		G.numActions = 1;
-		playCard(cardPosition, 0, 0, 0, &G);
-		safe_assert(G.numActions == 1);
+		int tempHand[500];
+		playAdventurer(0,0,&G, 0, tempHand, 0);
+
 		
-		printf("TESTING adventurer was Discarded after Adventurer: ");
-		safe_assert(G.discardCount[currentPlayer] == originalG.discardCount[currentPlayer] + 1 //1 more card after used
-			&& G.discard[currentPlayer][G.discardCount[currentPlayer]-1] == adventurer);  //top of discard pile is greathall
+		printf("TESTING QUANTITY of DISCARD to DECK CARDS ");
+		//the number of cards in the deck + discard pile should have 1 less card(+adventurer in hand - 2 treasure from deck
+		safe_assert(originalG.deckCount[currentPlayer] + originalG.discardCount[currentPlayer]-G.deckCount[currentPlayer] - G.discardCount[currentPlayer] == 1);
 			
-		printf("TESTING Number of Cards in hand after Adventurer: ");
+		printf("TESTING Number of Cards in hand after playAdventurer: ");
 		safe_assert(G.handCount[currentPlayer] == originalG.handCount[currentPlayer] + 1);//should have discarded 1 and drawn 2
 		
-		printf("TESTING 1 less Card is in deck/discard  after Adventurer: ");
-		safe_assert(G.deckCount[currentPlayer] + G.discardCount[currentPlayer] == originalG.deckCount[currentPlayer]+ originalG.discardCount[currentPlayer] -1);  //should have 1 less card in deck
+		printf("TESTING if last two cards in hand are treasure cards: ");
+		//after playing adventurer, the last two cards in current player's hand should be treasure cards
+		int validCards = 0;
+		int x;
+		for(x = G.handCount[currentPlayer] -2; x < G.handCount[currentPlayer]; x++){
+			if(G.hand[currentPlayer][x] != copper || G.hand[currentPlayer][x] != silver || G.hand[currentPlayer][x] != gold)
+				validCards++;
+		}
+		safe_assert(validCards == 0); //both new cards are not treasure
 		
-		printf("TESTING Other Players' State After Adventurer: ");
+		printf("TESTING Other Players' State After playAdventurer: ");
 		int playerNotEffected = 0;	//flag for player difference
+		int j, k;
 		for(j = 0; j < numberOfPlayers; j++){	//testing other players hands
 			if(j != currentPlayer){
 				for(k = 0; k < MAX_HAND; k++){
@@ -101,6 +103,53 @@ int randomAdventurer(){
 		safe_assert(playerNotEffected == 0);
 		
 		int badState = 0;
+		printf("TESTING STATE OF THE TREASURE AND VICTORY DECKS: ");
+		for (k = adventurer; k <= treasure_map; k++){
+			if(G.supplyCount[k] != originalG.supplyCount[k])
+				badState++;
+		}
+		safe_assert(badState==0);
+		
+		//restore G to before card was played
+		
+		//**** testing via playCard ********
+		memcpy(&G, &originalG, sizeof(struct gameState));
+		printf("TESTING Action Count after Playing Adventurer via playCard: ");
+		G.numActions = 1;
+		playCard(cardPosition, 0, 0, 0, &G);
+		safe_assert(G.numActions == 1);
+		
+		printf("TESTING Adventurer was Discarded after Adventurer: ");
+		safe_assert(G.discardCount[currentPlayer] == originalG.discardCount[currentPlayer] + 1 //1 more card after used
+			&& G.discard[currentPlayer][G.discardCount[currentPlayer]-1] == great_hall);  //top of discard pile is greathall
+			
+		printf("TESTING Number of Cards in hand after Adventurer: ");
+		safe_assert(G.handCount[currentPlayer] == originalG.handCount[currentPlayer]);//should have discarded 1 and drawn 1
+		
+		printf("TESTING 1 less Card is in deck after Adventurer: ");
+		safe_assert(G.deckCount[currentPlayer] == originalG.deckCount[currentPlayer] -1);  //should have 1 less card in deck
+		
+		printf("TESTING Other Players' State After Adventurer: ");
+		playerNotEffected = 0;	//flag for player difference
+		for(j = 0; j < numberOfPlayers; j++){	//testing other players hands
+			if(j != currentPlayer){
+				for(k = 0; k < MAX_HAND; k++){
+					if(G.hand[j][k] != originalG.hand[j][k])
+						playerNotEffected++;
+				}
+				for(k = 0; k < MAX_DECK; k++){	//testing other players decks
+					if(G.deck[j][k] != originalG.deck[j][k])
+						playerNotEffected++;
+				}
+				for(k = 0; k < MAX_DECK; k++){	//testing other players discards
+					if(G.discard[j][k] != originalG.discard[j][k])
+						playerNotEffected++;
+				}
+			}
+		}
+		safe_assert(playerNotEffected == 0);
+		
+		badState = 0;
 		printf("TESTING STATE OF THE TREASURE AND VICTORY DECKS: ");
 		for (k = adventurer; k <= treasure_map; k++){
 			if(G.supplyCount[k] != originalG.supplyCount[k])

@@ -49,19 +49,16 @@ int testSmithy(){
 	G.discardCount[0] = 0;
 	G.hand[0][0] = smithy;
 	memcpy(&testG, &G, sizeof(struct gameState));
-
-	
-
-	printf("TESTING Number of Cards in Hand after Playing Smithy Via playCard: ");
+	printf("TESTING Number of Cards in Hand after Playing Smithy Via playSmithy: ");
 	G.numActions = 1;
-	playCard(0,0,0, 0, &G);
+	playSmithy(0, 0, &G);
 	safe_assert(G.handCount[0]== 3);
 	
-	printf("TESTING Smithy was Discarded after playCard: ");
+	printf("TESTING Smithy was Discarded after playSmithy: ");
 	safe_assert(G.discardCount[0] == 1 && G.discard[0][0] == smithy);
 	
 	
-	printf("TESTING 0 Cards are in deck after playCard: ");
+	printf("TESTING 0 Cards are in deck after playSmithy: ");
 	safe_assert(G.deckCount[0] == 0);
 	
 	printf("TESTING Other Players(1-3) State After playSmithy: ");
@@ -82,7 +79,47 @@ int testSmithy(){
 	}
 	safe_assert(playerNotEffected == 0);
 	
-	int  badState = 0;
+		int badState = 0;
+	printf("TESTING STATE OF THE TREASURE AND VICTORY DECKS: ");
+	  for (i = adventurer; i <= treasure_map; i++){
+		  if(G.supplyCount[i] != testG.supplyCount[i])
+			  badState++;
+	  }
+	 safe_assert(badState==0);
+	
+	//restore G to before card was played
+	memcpy(&G, &testG, sizeof(struct gameState));
+	printf("TESTING Number of Cards in Hand after Playing Smithy Via playCard: ");
+	G.numActions = 1;
+	playCard(0,0,0, 0, &G);
+	safe_assert(G.handCount[0]== 3);
+	
+	printf("TESTING Smithy was Discarded after playCard: ");
+	safe_assert(G.discardCount[0] == 1 && G.discard[0][0] == smithy);
+	
+	
+	printf("TESTING 0 Cards are in deck after playCard: ");
+	safe_assert(G.deckCount[0] == 0);
+	
+	printf("TESTING Other Players(1-3) State After playSmithy: ");
+	playerNotEffected = 0;	//flag for player difference
+	for(j = 1; j < PLAYER_COUNT; j++){	//testing other players hands
+		for(i = 0; i < MAX_HAND; i++){
+			if(G.hand[j][i] != testG.hand[j][i])
+				playerNotEffected++;
+		}
+		for(i = 0; i < MAX_DECK; i++){	//testing other players decks
+			if(G.deck[j][i] != testG.deck[j][i])
+				playerNotEffected++;
+		}
+		for(i = 0; i < MAX_DECK; i++){	//testing other players discards
+			if(G.discard[j][i] != testG.discard[j][i])
+				playerNotEffected++;
+		}
+	}
+	safe_assert(playerNotEffected == 0);
+	
+		 badState = 0;
 	printf("TESTING STATE OF THE TREASURE AND VICTORY DECKS: ");
 	  for (i = adventurer; i <= treasure_map; i++){
 		  if(G.supplyCount[i] != testG.supplyCount[i])
